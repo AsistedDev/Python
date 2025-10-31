@@ -1,0 +1,75 @@
+bank_value = 10230  # Value in euros
+accounts = []  # ever_changing list of bank accounts
+logged_in = False
+
+def check_accounts():
+    return accounts[-1] if accounts else None
+    
+def create_account():
+    username = str(input("Please create your account nickname: "))
+    PIN = int(input("Please create your account PIN: "))
+    if not len(str(PIN)) > 4:
+        accounts.append([username, PIN])
+        print("Account has been successfuly created: ", check_accounts())
+    else:
+        print("PIN Number amount exceeded")
+
+   
+def login_account():
+    username = str(input("Please input your bank username: "))
+    PIN = int(input("Please input your bank PIN: "))
+
+    for i, account in enumerate(accounts):
+        if account[0] == username and account[1] == PIN:
+            global logged_in
+            logged_in = True
+            print("You've successfully logged in as", account[0])
+        else:
+            print("Incorrect password or PIN code")
+            
+            
+
+def deposit(value, account):
+    if len(accounts[account]) == 2: # This part creates the placeholder for bank account instances such as Cash and such values.
+        accounts[account].append([])
+        accounts[account][2].append(["Cash", 0])
+        accounts[account][2][0][1] = bank_value
+        accounts[account][2][0][1] += value
+        print("has an instance", accounts[account][2][0][1])
+    else:
+        accounts[account][2][0][1] += value
+        print("has an instance", accounts[account][2][0][1])
+
+def withdraw(value, account):
+    if len(accounts[account]) == 2: # This part creates the placeholder for bank account instances such as Cash and such values.
+        accounts[account].append([])
+        accounts[account][2].append(["Cash", 0])
+        accounts[account][2][0][1] = bank_value
+
+        if accounts[account][2][0][1] >= value:
+            accounts[account][2][0][1] -= value
+        else:
+            return print("Cannot withdraw from 0")
+        print("has an instance", accounts[account][2][0][1],"cash")
+       
+    else:
+        accounts[account][2][0][1] -= value
+        print("has an instance", accounts[account][2][0][1],"cash")
+
+
+while True:
+    if len(accounts) == 0:
+        create_account()
+        continue
+
+    if not logged_in:
+        login_account()
+    else:
+        str_value = str(input("Would you like to withdraw or deposit cash?: "))
+        if str_value == "deposit":
+            deposit(float(input("How much would you like to deposit?: ")), 0) # [(100 [Deposit Value], 0 [Account integer position inside a table])]
+        elif str_value == "withdraw":
+            withdraw(float(input("How much would you like to withdraw?: ")), 0)
+        elif str_value == "end":
+            break
+
