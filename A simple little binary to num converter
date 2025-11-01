@@ -1,20 +1,22 @@
-binary = int(input("Input you binary code: "))
+binary = input("Input you binary code: ")
 indexes = []
 factorials = []
 
 nums = []
 total = 0
 
-for i, v in enumerate(str(binary)):
-    indexes.append(v)
-    factorials.append(i)
+for i, v in enumerate(str(binary).split(" ")):
+    for g, c in enumerate(v):
+        indexes.append(c)
+        factorials.append(g)
 
 factorials.reverse()
 
 for c, index in enumerate(indexes):
+    print(index)
     nums.append(int(index) * (2**factorials[c]))
 
 for _, number in enumerate(nums):
     total += number
 
-print(total, chr(total))
+print(total)
