@@ -1,0 +1,74 @@
+class Stack():
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        return self.items.pop() if not self.is_empty() else None
+
+    def peek(self):
+        return self.items[-1] if not self.is_empty() else None
+
+    def is_empty(self):
+        return len(self.items) == 0
+
+    def clear(self):
+        self.items = []
+
+def Reverse_String(s):
+    stack = Stack()
+    for char in s:
+        stack.push(char)
+    return "".join(stack.pop() for _ in range(len(s)))
+
+
+def Valid_Parentheses(expr: str):
+    stack = Stack()
+    pairs = {')': '(', ']': '[', '}': '{'}
+
+    for char in expr:
+        if char in "([{":
+            stack.push(char)
+        elif char in "}])":
+            if stack.is_empty() or stack.pop() != pairs[char]:
+                return False
+    return stack.is_empty()
+
+def Combine_Letters(letters: list):
+    stack = Stack()
+    result = []
+
+    for letter in reversed(letters):
+        stack.push(letter)
+
+    while not stack.is_empty():
+        prefix = stack.pop()
+
+        if len(prefix) == 2:
+            result.append(prefix)
+        else:
+            for letter in reversed(letters):
+                if letter not in prefix:
+                    stack.push(prefix + letter)
+    return result
+
+
+def Int_To_Roman(num):
+    val_map = [
+        (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+        (100, "C"), (90, "XC"), (50, "L"), (40, "XL"),
+        (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
+    ]
+    Roman = ""
+
+    for number, char in val_map:
+        while number <= num:
+            Roman += char
+            num -= number
+    return Roman
+
+
+print(Int_To_Roman(33))
+print(Combine_Letters(["A", "B", "C"]))
